@@ -1,124 +1,141 @@
-# 📅 Day 2: Create User with Expiry Date (Linux)
+# 📅 Day 2: Create Security Group (AWS)
 
 ---
 
 ## 🧠 Task
 
-Create a temporary user named `yousuf` on **App Server 1** with an expiry date.
-
----
-
-## 🏢 Infrastructure Details
-
-| Server       | Hostname | User   | Purpose                |
-| ------------ | -------- | ------ | ---------------------- |
-| App Server 1 | stapp01  | tony   | Nautilus Application 1 |
-| App Server 2 | stapp02  | steve  | Nautilus Application 2 |
-| App Server 3 | stapp03  | banner | Nautilus Application 3 |
+Create a security group in AWS under the **default VPC** with specific inbound rules.
 
 ---
 
 ## 🎯 Objective
 
-* Create user: `yousuf`
-* Ensure username is **lowercase**
-* Set expiry date: `2027-03-28`
+* **Security Group Name:** `nautilus-sg`
+* **Description:** Security group for Nautilus App Servers
+* **Region:** `us-east-1`
+
+### Inbound Rules:
+
+| Type | Port | Source    |
+| ---- | ---- | --------- |
+| HTTP | 80   | 0.0.0.0/0 |
+| SSH  | 22   | 0.0.0.0/0 |
 
 ---
 
 ## 🚀 Steps to Execute
 
-### 1. Connect to Server
+### 1. Login to AWS
+
+* Open the **Console URL**
+* Enter Username & Password
+
+---
+
+### 2. Select Region
+
+* Top-right corner → Select
 
 ```bash
-ssh tony@stapp01
+us-east-1 (N. Virginia)
 ```
 
 ---
 
-### 2. Switch to Root
+### 3. Go to EC2 Dashboard
 
-```bash
-sudo su -
-```
-
----
-
-### 3. Create User with Expiry Date
-
-```bash
-useradd -e 2027-03-28 yousuf
-```
+* Search → **EC2**
+* Open EC2 service
 
 ---
 
-### 4. Verify User Expiry
+### 4. Create Security Group
+
+Navigate to:
 
 ```bash
-chage -l yousuf
+EC2 → Security Groups → Create Security Group
 ```
 
-Expected Output (partial):
+Fill details:
 
-```
-Account expires : Mar 28, 2027
-```
+* Name → `nautilus-sg`
+* Description → Security group for Nautilus App Servers
+* VPC → Default
+
+---
+
+### 5. Add Inbound Rules
+
+Add the following:
+
+* **HTTP**
+
+  * Port: 80
+  * Source: `0.0.0.0/0`
+
+* **SSH**
+
+  * Port: 22
+  * Source: `0.0.0.0/0`
+
+👉 Click **Create Security Group**
 
 ---
 
 ## 💡 What I Learned Today
 
-### Creating Users with Expiry Date
+### What is a Security Group
 
-Linux allows setting an expiration date for users, which is useful for temporary access.
+A security group acts as a virtual firewall that controls inbound and outbound traffic for AWS resources like EC2.
 
-### Importance of Temporary Users
+### Importance of Ports and Protocols
 
-Temporary accounts help in managing short-term access securely without manual cleanup.
+Different services run on specific ports (HTTP → 80, SSH → 22), and allowing correct ports ensures proper access.
 
-### Account Expiry Management
+### CIDR Range (0.0.0.0/0)
 
-Using tools like `chage`, we can verify and manage password and account expiry details.
+This means access is allowed from anywhere (public access), which should be used carefully.
 
 ---
 
 ## 🛠️ What I Built / Practiced
 
-* Connected to Application Server (`stapp01`)
-* Created a temporary user `yousuf`
-* Set an expiry date for the account
-* Verified expiry using `chage`
+* Logged into AWS Console
+* Navigated to EC2 Security Groups
+* Created a security group `nautilus-sg`
+* Configured inbound rules for HTTP and SSH
 
 ---
 
 ## ⚠️ Challenges
 
-* Remembering the correct command option for expiry (`-e`)
-* Date format confusion (`YYYY-MM-DD`)
+* Understanding CIDR notation (`0.0.0.0/0`)
+* Confusion about which ports to open
 
 ---
 
 ## 🔧 Fix / Learning
 
-* Learned correct syntax: `useradd -e YYYY-MM-DD`
-* Understood how Linux handles account expiration
+* Learned that `0.0.0.0/0` allows traffic from anywhere
+* Understood standard ports (80 for HTTP, 22 for SSH)
 
 ---
 
 ## 🧩 Key Takeaway
 
-Temporary user accounts improve security and simplify access management.
+Security groups are essential for controlling access and securing AWS resources.
 
 ---
 
 ## 🧩 Summary
 
 ```bash
-Create a user 'yousuf' with expiry date 2027-03-28 on stapp01
+Create a security group 'nautilus-sg' with HTTP (80) and SSH (22) access in us-east-1
 ```
 
 ---
 
 ## ✅ Outcome
 
-Successfully created a temporary user with controlled access duration.
+Successfully created a security group and configured inbound rules for web and SSH access.
